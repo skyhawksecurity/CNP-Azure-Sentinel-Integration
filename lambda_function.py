@@ -3,12 +3,12 @@
 # *******************************************************************************
 # Name: lambda_function.py
 # Version: v1.1
-# Description: This open source AWS tool consumes the published security findings detected in Radware CWP to then
+# Description: This open source AWS tool consumes the published security findings detected in Skyhawk Security SYN to then
 # trigger an event in Microsoft Azure Sentinel. The CWP Findings passed to Microsoft Azure Sentinel are determined by the CWP risk
 # score filter within the tool. All other findings are discarded.
 #
 # Author: Chen Sagi
-# www.radware.com
+# skyhawk.security
 #
 # Environment Variables required:
 #  - shared_key
@@ -30,13 +30,13 @@ customer_id = os.environ['customer_id']
 cwp_score_filter = os.environ['cwp_score_filter']
 cwp_score_filter = cwp_score_filter.split(',')
 
-log_type = "RadwareCNP"
+log_type = "SkyhawkSecuritySYN"
 
 # Build the API signature
 def build_signature(customer_id, shared_key, date, content_length, method, content_type, resource):
     x_headers = 'x-ms-date:' + date
     string_to_hash = method + "\n" + str(content_length) + "\n" + content_type + "\n" + x_headers + "\n" + resource
-    bytes_to_hash = bytes(string_to_hash, encoding="utf-8")  
+    bytes_to_hash = bytes(string_to_hash, encoding="utf-8")
     decoded_key = base64.b64decode(shared_key)
     encoded_hash = base64.b64encode(hmac.new(decoded_key, bytes_to_hash, digestmod=hashlib.sha256).digest()).decode()
     authorization = "SharedKey {}:{}".format(customer_id,encoded_hash)
@@ -92,7 +92,7 @@ def process_alert(msg):
             print(process_error)
             return {"success": False, "comment": process_error}
 
-        links = [{"href": msg["objectPortalURL"], "text": "Link to event in Radware CNP Portal"}]
+        links = [{"href": msg["objectPortalURL"], "text": "Link to event in Skyhawk Security SYN Portal"}]
 
         payload = {
             "summary": summary,

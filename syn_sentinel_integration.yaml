@@ -23,9 +23,9 @@ Parameters:
     MinLength: '12'
     MaxLength: '12'
     Type: String
-    Description: The automated response Radware account ID to send publish notifications to. specified at the portal under Settings -> Cloud Accounts -> (Automated response) Activate
+    Description: The automated response Skyhawk Security account ID to send publish notifications to. specified at the portal under Settings -> Cloud Accounts -> (Automated response) Activate
     Default: '438643506655'
-    
+
 Resources:
   InputTopic:
     Type: AWS::SNS::Topic
@@ -47,7 +47,7 @@ Resources:
     Type: AWS::SNS::TopicPolicy
   Solution:
     Properties:
-      CodeUri: 
+      CodeUri:
         Bucket: !Join [ '' , [ 'cnp-public-' , !Ref AWS::Region ] ]
           # If deploying CFT manually, replace this join with a string (e.g. "Bucket: my-custom-bucket-name"
         Key: 'Azure-Sentinel-integration/Azure-Sentinel-integration.zip'
